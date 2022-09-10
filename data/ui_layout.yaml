@@ -1,0 +1,17 @@
+header:
+  id: header_id
+  type: markdown
+content:
+  id: content
+  type: markdown
+  description: |
+    # Заголовок 1
+    ## Заголовок 2
+    | table1 | asd |
+    |:-------|----:|
+    | text | text2 |
+    
+    1. список 1
+    2. список 2
+  class: col-row-12
+
