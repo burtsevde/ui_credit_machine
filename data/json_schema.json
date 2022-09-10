@@ -1,7 +1,28 @@
 {
     "type" : "object",
-    "properties" : {
-        "price" : {"type" : "number"},
-        "name" : {"type" : "string"}
+    "forms" : {
+        "form_1": {
+            "$id": "form_1",
+            "type": "object",
+            "properties": {
+                "price": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "form_2": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
     }
 }
