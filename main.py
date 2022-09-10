@@ -3,7 +3,7 @@ import webbrowser
 from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader
-
+from bs4 import BeautifulSoup
 
 # тестовый json schema
 # тестовый набор данных под схему
@@ -24,17 +24,61 @@ class UI:
 
     def get_content(self) -> str:
         import markdown
+        from markdown.extensions.tables import TableExtension
         from bs4 import BeautifulSoup
+        extensions = [TableExtension(use_align_attribute=True)]
         soup = BeautifulSoup()
         # изучаем ui_layout
         for item in self.ui_yaml:
+            div = BeautifulSoup().new_tag('div')
 
-            soup.append('<p>asd</p>')
+            if self.ui_yaml[item]['type'] == 'form':
+                soup.append(Form(self.ui_yaml[item]).get_form())
+                continue
 
-        html = markdown.markdown('string', output_format='html')
+            div['name'] = item
+            div['id'] = self.ui_yaml[item]['id']
+            div['class'] = self.ui_yaml[item]['class']
 
-        return soup
+            description = self.ui_yaml[item]['description'] if 'description' in self.ui_yaml[item] else ''
+            html = markdown.markdown(description, extensions=extensions)
+            div.append(BeautifulSoup(html))
 
+            soup.append(div)
+
+        return str(soup)
+
+class Form:
+    def __init__(self, input_form):
+        self.form = input_form
+
+    def get_form(self):
+        form = BeautifulSoup().new_tag('form')
+        form['class'] = self.form['class']
+
+        for item in self.form['fields']:
+            html = self.get_field(self.form['fields'][item])
+            form.append(html)
+
+        return form
+
+    def get_field(self, field) -> BeautifulSoup:
+        div = BeautifulSoup().new_tag('div')
+        div['class'] = field['class']
+
+        label = BeautifulSoup().new_tag('label')
+        label['for'] = field['id']
+        label['class'] = "form-label"
+        label.string = field['label']
+
+        _input = BeautifulSoup().new_tag('input')
+        _input['type'] = field['type']
+        _input['class'] = "form-control"
+        _input['id'] = field['id']
+
+        div.append(label)
+        div.append(_input)
+        return div
 
 if __name__ == '__main__':
     ui_test = UI(json_schema=Path('data/json_schema.json'),
@@ -42,11 +86,10 @@ if __name__ == '__main__':
                  ui_yaml=Path('data/ui_layout.yaml'))
 
     env = Environment(loader=FileSystemLoader('./template'))
-    # template = env.get_template('DocVeriosn_-4591224837923658569.html')
-    template = env.get_template('baseTamlate.html')
+    template = env.get_template('baseTamplate.html')
 
-    with open('test_template.html', 'w', encoding='utf-8') as f:
-        f.write(template.render(ui_test.get_content()))
+    with open('./template/test_template.html', 'w', encoding='utf-8') as f:
+        f.write(template.render(content=ui_test.get_content()))
 
     webbrowser.open('test_template.html')
 

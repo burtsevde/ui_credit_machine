@@ -1,12 +1,14 @@
 header:
   id: header_id
   type: markdown
+  class: col-md-12
 content:
   id: content
   type: markdown
   description: |
     # Заголовок 1
     ## Заголовок 2
+
     | table1 | asd |
     |:-------|----:|
     | text | text2 |
@@ -14,4 +16,22 @@ content:
     1. список 1
     2. список 2
   class: col-md-12
+form_1:
+  id: form_1_id
+  type: form
+  class: row g-3
+  fields:
+    email:
+      id: inputEmail4
+      type: email
+      label: Email
+      class: col-md-6
+      properties:
+        placeholder: Default input
+    name:
+      id: inputPassword4
+      type: password
+      label: Password
+      class: col-md-6
+
 

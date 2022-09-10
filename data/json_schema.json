@@ -4,7 +4,7 @@
         "form_1": {
             "$id": "form_1",
             "type": "object",
-            "properties": {
+            "fields": {
                 "price": {
                     "type": "number"
                 },
@@ -15,7 +15,7 @@
         },
         "form_2": {
             "type": "object",
-            "properties": {
+            "fields": {
                 "price": {
                     "type": "string"
                 },
