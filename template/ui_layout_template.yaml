@@ -1,0 +1,11 @@
+block:
+  required:
+    - type
+markdown:
+  required:
+    - text
+form:
+  required:
+    - class
+object:
+
